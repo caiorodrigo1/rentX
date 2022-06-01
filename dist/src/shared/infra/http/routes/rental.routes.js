@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rentalRoutes = void 0;
+const express_1 = require("express");
+const CreateRentalController_1 = require("../../../../modules/rentals/useCases/createRental/CreateRentalController");
+const ListRentalsByUserController_1 = require("../../../../modules/rentals/useCases/listRentalsByUser/ListRentalsByUserController");
+const ReturnRentalController_1 = require("../../../../modules/rentals/useCases/returnRental/ReturnRentalController");
+const ensureAuthenticated_1 = require("../middlewares/ensureAuthenticated");
+const rentalRoutes = (0, express_1.Router)();
+exports.rentalRoutes = rentalRoutes;
+const createRentalController = new CreateRentalController_1.CreateRentalController();
+const returnRentalController = new ReturnRentalController_1.ReturnRentalController();
+const listRentalsByUserController = new ListRentalsByUserController_1.ListRentalsByUserController();
+rentalRoutes.post("/", ensureAuthenticated_1.ensureAuthenticated, createRentalController.handle);
+rentalRoutes.post("/return/:id", ensureAuthenticated_1.ensureAuthenticated, returnRentalController.handle);
+rentalRoutes.get("/user", ensureAuthenticated_1.ensureAuthenticated, listRentalsByUserController.handle);
